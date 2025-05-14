@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 public class Gun : MonoBehaviour
 {
     private float rotateOffset = 180f;
@@ -10,10 +10,12 @@ public class Gun : MonoBehaviour
     [SerializeField] private float shotDelay = 0.15f;
     private float nextShot;
     [SerializeField] private int maxAmmo = 24;
+    [SerializeField] private TextMeshProUGUI ammoText;
     public int currentAmmo;
     void Start()
     {
         currentAmmo = maxAmmo;
+        UpdateteAmmoText();
     }
 
     // Update is called once per frame
@@ -48,6 +50,7 @@ public class Gun : MonoBehaviour
             nextShot = Time.time + shotDelay;
             Instantiate(bulletPrefabs,firePos.position,firePos.rotation);
             currentAmmo--;
+            UpdateteAmmoText();
         }
     }
     void ReLoad()
@@ -55,6 +58,21 @@ public class Gun : MonoBehaviour
         if(Input.GetMouseButton(1) && currentAmmo < maxAmmo)
         {
             currentAmmo = maxAmmo;
+            UpdateteAmmoText();
+        }
+    }
+    private void UpdateteAmmoText()
+    {
+        if (ammoText != null)
+        {
+            if (currentAmmo > 0)
+            {
+                ammoText.text = currentAmmo.ToString();
+            }
+            else
+            {
+                ammoText.text = "Empty";
+            }
         }
     }
 }
